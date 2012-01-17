@@ -1,2 +1,79 @@
+#container
+	font-family: Georgia, "Times New Roman", serif
+	font-size: 12px
+	line-height: 14px
+	color: #666666
+a
+	color: #888
+	text-decoration: underline
+	&:hover
+		color: #000
+p
+	margin-bottom: 10px
 h1
-	color: #0000ff
+	font-size: 30px
+	color: #000
+h2
+	color: #333
+	font-style: italic
+	font-size: 20px
+	line-height: 20px
+	margin-bottom: 10px
+
+.pedestal
+	width: 120px
+	height: 178px
+	background-color: #bbb
+	text-align: center
+	
+.movie
+	padding: 10px
+
+#mainContent
+	width: 980px
+	margin: 0px auto
+	#selections
+		height: 178px
+		margin: 20px 0px 0px 20px
+		li
+			width: 280px
+			height: 178px
+			padding: 10px
+			background-color: #eeeeee
+			margin: 0px 20px 20px 0px
+			position: relative
+			float: left
+			.pedestal
+				float: left
+				margin-right: 10px
+			.movie
+				position: absolute
+				z-index: 10
+				top: 0px
+				left: 0px
+				width: 280px
+				.pedestal
+					float: left
+				p
+					padding-top: 30px
+	#choices
+		margin: 20px 0px 0px 20px
+		overflow: auto
+		width: 100%
+		.movie
+			width: 120px
+			height: 212px
+			background-color: #eeeeee
+			margin: 0px 20px 20px 0px
+			float: left
+			.pedestal
+				margin-bottom: 10px
+	#selections
+		li
+			&.state-highlight
+				background-color: #ffeeaa
+			&.state-hover
+				background-color: #333
+				color: #fff
+				h2
+					color: #fff
