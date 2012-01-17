@@ -1,42 +1,46 @@
 - content_for :stylesheets do
-	= stylesheet_link_tag "home"
-	
+  = stylesheet_link_tag "home"
+
 - content_for :scripts do
-	= javascript_include_tag "jquery-ui-1.8.17.custom.min"
-	= javascript_include_tag "home"
-	
+  = javascript_include_tag "jquery-ui-1.8.17.custom.min"
+  :javascript
+    var movies = [#{
+      @movies.map { |movie| %Q{{"id": "#{movie.id}", "name": #{movie.name.to_json}, "slug": "#{movie.slug}", "url1": #{movie.url1.to_json}, "url2": #{movie.url2.to_json}}} }.join(',')
+    }]
+  = javascript_include_tag "home"
+
 #container
-	#mainContent
-		%ol#selections
-			%li#vote1
-				.pedestal
-				%h2 First Choice
-				%p.instructions
-					drag your favorite movie into this box
-			%li#vote2
-				.pedestal
-				%h2 Second Choice
-				%p.instructions
-					drag your second favorite movie into this box
-			%li#vote2
-				.pedestal
-				%h2 Third Choice
-				%p.instructions
-					drag your third favorite movie into this box
-		#choices
-			#extremely-loud-and-incredibly-close.movie
-				.pedestal
-					= image_tag ('extremely-loud-and-incredibly-close.jpeg')
-				%p Extremely Loud and Incredibly Close
-			#the-descendants.movie
-				.pedestal
-					= image_tag ('the-descendants.jpeg')
-				%p The Descendants
-			#the-help.movie
-				.pedestal
-					= image_tag ('the-help.jpeg')
-				%p The Help
-			#the-artist.movie
-				.pedestal
-					= image_tag ('the-artist.jpeg')
-				%p The Artist
+  #mainContent
+    %ol#selections
+      %li#vote1
+        .pedestal
+        %h2 First Choice
+        %p.instructions
+          drag your favorite movie into this box
+      %li#vote2
+        .pedestal
+        %h2 Second Choice
+        %p.instructions
+          drag your second favorite movie into this box
+      %li#vote2
+        .pedestal
+        %h2 Third Choice
+        %p.instructions
+          drag your third favorite movie into this box
+    #choices
+      #extremely-loud-and-incredibly-close.movie
+        .pedestal
+          = image_tag ('extremely-loud-and-incredibly-close.jpeg')
+        %p Extremely Loud and Incredibly Close
+      #the-descendants.movie
+        .pedestal
+          = image_tag ('the-descendants.jpeg')
+        %p The Descendants
+      #the-help.movie
+        .pedestal
+          = image_tag ('the-help.jpeg')
+        %p The Help
+      #the-artist.movie
+        .pedestal
+          = image_tag ('the-artist.jpeg')
+        %p The Artist

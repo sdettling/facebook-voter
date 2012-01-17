@@ -17,7 +17,7 @@ development:
   encoding: unicode
   database: facebook_voter_development
   pool: 5
-  username: sdettling
+  username: StephenD
   password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -43,7 +43,7 @@ test:
   encoding: unicode
   database: facebook_voter_test
   pool: 5
-  username: sdettling
+  username: StephenD
   password:
   host: localhost
   port: 5432
