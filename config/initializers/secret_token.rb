@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-FacebookVoter::Application.config.secret_token = 'f2a9a7c88a35ac948a2127532a5baec832cd6f9fbeb9778cc866b004e5abf7eafaf54b1b90f3504c77fbed595393ea626d2ff279795b6c9d8eca5b55952973ea'
+FacebookVoter::Application.config.secret_token = '0244c8b70ed5937d41e15ec1f9636936392d9a89a495484d5a3edf88311656a0fbe0d3f65eb7a438224a897175c4605500129a71afedbe6952498fdbcda6e3a6'
