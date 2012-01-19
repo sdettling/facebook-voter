@@ -1,4 +1,10 @@
 FacebookVoter::Application.routes.draw do
+  resources :movies
+  resources :users
+  resources :votes
+
+  post "users/create"
+
   root :to => "home#index"
 
   # The priority is based upon order of creation:

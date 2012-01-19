@@ -1,4 +1,34 @@
 $(document).ready(function() {
+
+	$.ajax({
+	  url: '/movies',
+	  success: function( data ) {
+	    if (console && console.log){
+	      console.log(data);
+	    }
+	  }
+	});
+
+	$("#login").click(function(e) {
+		e.preventDefault();
+		FB.login(function(response) {
+			if (response.authResponse) {
+				FB.api('/me', function(response) {
+					fbUserInfo = response;
+					console.log(fbUserInfo);
+				});
+			} else {
+				console.log('User cancelled login or did not fully authorize.');
+			}
+		}, {scope: 'email'});
+	});
+
+	/*$.post('/users', { "user": { "name": "John", "email": "email", "fbid": "939393" }} );
+	$.post('/votes', { "votes": [ {"vote": { "voter": "100", "movie": "001", "type": "1" }}, {"vote":{ "voter": "100", "movie": "002", "type": "3" }},{"vote":{ "voter": "100", "movie": "003", "type": "3" }] } );
+*/
+
+	$.post('/votes/:1');
+
 	var choices = new Array("","","");
 	var $selections = $( "#selections" ),
 	$choices = $( "#choices" );
