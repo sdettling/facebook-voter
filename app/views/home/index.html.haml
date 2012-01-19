@@ -3,10 +3,6 @@
 
 - content_for :scripts do
   = javascript_include_tag "jquery-ui-1.8.17.custom.min"
-  :javascript
-    var movies = [#{
-      @movies.map { |movie| %Q{{"id": "#{movie.id}", "name": #{movie.name.to_json}, "slug": "#{movie.slug}", "url1": #{movie.url1.to_json}, "url2": #{movie.url2.to_json}}} }.join(',')
-    }]
   = javascript_include_tag "home"
 
 #container
@@ -22,7 +18,7 @@
         %h2 Second Choice
         %p.instructions
           drag your second favorite movie into this box
-      %li#vote2
+      %li#vote3
         .pedestal
         %h2 Third Choice
         %p.instructions

@@ -40,7 +40,7 @@ $(document).ready(function() {
 		var choiceNumber = $choice[0].id.replace("vote", "");
 		var existingMovie = choices[(choiceNumber-1)];
 		var droppedArrayPos = $.inArray(movieName, choices);
-		var existingArrayPos = $.inArray(existingMovie, choices);		
+		var existingArrayPos = $.inArray(existingMovie, choices);
 		if (existingMovie == "")
 		{
 			$item.fadeOut('fast',function() {
