@@ -3,7 +3,7 @@ class CreateVotes < ActiveRecord::Migration
     create_table :votes do |t|
       t.integer :voter
       t.integer :movie
-      t.integer :type
+      t.integer :rank
 
       t.timestamps
     end

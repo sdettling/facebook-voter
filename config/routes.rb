@@ -3,7 +3,7 @@ FacebookVoter::Application.routes.draw do
   resources :users
   resources :votes
 
-  post "users/create"
+  #post "users/create"
 
   root :to => "home#index"
 

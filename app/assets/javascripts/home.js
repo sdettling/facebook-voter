@@ -27,7 +27,7 @@ $(document).ready(function() {
 	$.post('/votes', { "votes": [ {"vote": { "voter": "100", "movie": "001", "type": "1" }}, {"vote":{ "voter": "100", "movie": "002", "type": "3" }},{"vote":{ "voter": "100", "movie": "003", "type": "3" }] } );
 */
 
-	$.post('/votes/:1');
+	$.post('/votes', { "selections": {"user": "1", "vote1": "111", "vote2": "222", "vote3": "333" }});
 
 	var choices = new Array("","","");
 	var $selections = $( "#selections" ),

@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20120117061936) do
   create_table "votes", :force => true do |t|
     t.integer  "voter"
     t.integer  "movie"
-    t.integer  "type"
+    t.integer  "rank"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
