@@ -3,7 +3,7 @@ $(document).ready(function() {
   var movies = null;
   var users = null;
   var votes = null;
-  var fbUserInfo = {"fbid": "12345", "name": "Stephen Dettling"};
+  var fbUserInfo = null;
   var choices = new Array("","","");
   var chosenIDs = new Array("","","");
   var $selections = $( "#selections" );
@@ -40,38 +40,26 @@ $(document).ready(function() {
 
   $("#fb-login").click(function(e) {
     e.preventDefault();
-    setupSelector();
-    $("#login").hide();
-    $("#nav").show();
-    $("#selections").show();
-  });
-
-  $("#real-login").click(function(e) {
-    e.preventDefault();
     FB.login(function(response) {
       if (response.authResponse) {
         FB.api('/me', function(response) {
           fbUserInfo = response;
-          console.log(fbUserInfo);
-
-          //if the user isn't already in the db add them
-          //$.post('/users', { "user": { "name": "John", "email": "email", "fbid": "939393" }} );
-          //hide the login button
-          //show the selector
-          //show the nav
-
+          $.ajax({
+            type: "POST",
+            url: '/users',
+            data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
+            always: function() {
+              $("#login").hide();
+              $("#nav").show();
+              $("#selections").show();
+            }
+          });
         });
       } else {
         alert('Facebook login was unsuccessful. Please try again.');
       }
     });
   });
-
-/*$.post('/users', { "user": { "name": "John", "email": "email", "fbid": "939393" }} );
-$.post('/votes', { "votes": [ {"vote": { "voter": "100", "movie": "001", "type": "1" }}, {"vote":{ "voter": "100", "movie": "002", "type": "3" }},{"vote":{ "voter": "100", "movie": "003", "type": "3" }] } );
-*/
-
-//$.post('/votes', { "selections": {"user": "1", "vote1": "111", "vote2": "222", "vote3": "333" }});
 
   function setupSelector() {
     $choices = $( "#choices" );
@@ -187,5 +175,3 @@ $.post('/votes', { "votes": [ {"vote": { "voter": "100", "movie": "001", "type":
     }
   }
 });
-
-//prevent new drop until move (ajax) has been completed

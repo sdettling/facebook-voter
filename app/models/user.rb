@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  validates :name, :email, :fbid, uniqueness: true
+  validates :fbid, uniqueness: true
 end
