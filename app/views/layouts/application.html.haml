@@ -1,37 +1,36 @@
 !!! 5
 %html
-	%head
-		%meta{content: "text/html;charset=UTF-8", "http-equiv" => "content-type"}
-		= yield :metas
-		%title Vote
-		= stylesheet_link_tag "application"
-		= yield :stylesheets
-		= javascript_include_tag 'application'
-		= yield :scripts
+  %head
+    %meta{content: "text/html;charset=UTF-8", "http-equiv" => "content-type"}
+    = yield :metas
+    %title Vote
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+    = yield :scripts
 
-		%noscript
-			.noscriptmsg
-				Please be advised that your browser currently has JavaScript disabled. This site is designed to be used with JavaScript enabled. To ensure an optimal user experience, please enable JavaScript in your browser's settings, then
-				= succeed "." do
-					= link_to "click here", "#{request.url}"
+    %noscript
+      .noscriptmsg
+        Please be advised that your browser currently has JavaScript disabled. This site is designed to be used with JavaScript enabled. To ensure an optimal user experience, please enable JavaScript in your browser's settings, then
+        = succeed "." do
+          = link_to "click here", "#{request.url}"
 
-		= csrf_meta_tag
-	%body
-		#fb-root
-		:javascript
-			window.fbAsyncInit = function() {
-				FB.init({
-					appId      : '248504555218072', // App ID
-					channelUrl : '/channel.php', // Channel File
-					status     : true, // check login status
-					cookie     : true, // enable cookies to allow the server to access the session
-					xfbml      : true  // parse XFBML
-				});
-			};
-			(function(d){
-				var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-				js = d.createElement('script'); js.id = id; js.async = true;
-				js.src = "//connect.facebook.net/en_US/all.js";
-				d.getElementsByTagName('head')[0].appendChild(js);
-			}(document));
-		= content_for?(:content) ? yield(:content) : yield
+    = csrf_meta_tag
+  %body
+    #fb-root
+    :javascript
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '248504555218072', // App ID
+          channelUrl : '//celebratecinema.com/channel.html', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
+      };
+      (function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+      }(document));
+    = content_for?(:content) ? yield(:content) : yield

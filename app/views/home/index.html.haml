@@ -1,8 +1,5 @@
-- content_for :stylesheets do
-  = stylesheet_link_tag "home"
-
-- content_for :scripts do
-  = javascript_include_tag "jquery-ui-1.8.17.custom.min"
+= content_for :scripts do
+  = javascript_include_tag "jquery-ui-1.8.17.min"
   = javascript_include_tag "jquery.tmpl.min"
   = javascript_include_tag "home"
 
@@ -19,7 +16,7 @@
     #nav
       = link_to "Show Results", "#", id: "results-toggle"
       .saving
-        
+
     #results
       .graph
         .y-axis
