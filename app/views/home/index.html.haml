@@ -3,41 +3,87 @@
 
 - content_for :scripts do
   = javascript_include_tag "jquery-ui-1.8.17.custom.min"
+  = javascript_include_tag "jquery.tmpl.min"
   = javascript_include_tag "home"
 
 #container
   -#= link_to "login", "#", id: "login"
   #mainContent
-    %ol#selections
-      %li#vote1
-        .pedestal
-        %h2 First Choice
-        %p.instructions
-          drag your favorite movie into this box
-      %li#vote2
-        .pedestal
-        %h2 Second Choice
-        %p.instructions
-          drag your second favorite movie into this box
-      %li#vote3
-        .pedestal
-        %h2 Third Choice
-        %p.instructions
-          drag your third favorite movie into this box
-    #choices
-      #extremely-loud-and-incredibly-close.movie
-        .pedestal
-          = image_tag ('extremely-loud-and-incredibly-close.jpeg')
-        %p Extremely Loud and Incredibly Close
-      #the-descendants.movie
-        .pedestal
-          = image_tag ('the-descendants.jpeg')
-        %p The Descendants
-      #the-help.movie
-        .pedestal
-          = image_tag ('the-help.jpeg')
-        %p The Help
-      #the-artist.movie
-        .pedestal
-          = image_tag ('the-artist.jpeg')
-        %p The Artist
+    #header
+      %h1
+        The Academy's Best Pictures of 2011
+    #login
+      = link_to "Login", "#", id: "fb-login"
+      %p
+        Which of these nominees deserve to win Best Picture at the Oscars this year? Click on the Facebook log in button to vote for your favorites.
+    #nav
+      = link_to "Show Results", "#", id: "results-toggle"
+      .saving
+        
+    #results
+      .graph
+        .y-axis
+          .notch
+            100%
+          .sub-notch
+          .notch
+            75%
+          .sub-notch
+          .notch
+            50%
+          .sub-notch
+          .notch
+            25%
+          .sub-notch
+          .notch
+            0%
+        .item
+          .bar
+            .value
+          .info
+            .pedestal
+            %p
+              This is the title of the movie
+            %p
+              1000 points
+        .item.alt
+          .bar
+            .value
+          .info
+        .item
+          .bar
+            .value
+          .info
+        .item.alt
+          .bar
+            .value
+          .info
+        .item
+          .bar
+            .value
+          .info
+        .item.alt
+          .bar
+            .value
+          .info
+    #selector
+      %ol#selections
+        %li#vote1
+          .pedestal
+          %h2 First Choice
+          %p.instructions
+            drag your favorite movie into this box
+        %li#vote2
+          .pedestal
+          %h2 Second Choice
+          %p.instructions
+            drag your second favorite movie into this box
+        %li#vote3
+          .pedestal
+          %h2 Third Choice
+          %p.instructions
+            drag your third favorite movie into this box
+      #choices
+  #footer
+    %p
+      This website has no affiliations with The Academy of Motion Picture Arts and Sciences or any other organization. It's just a fun way to see which movies a random sampling of people enjoyed the most this year. Votes on this site have no meaning and do not affect the outcome of the Academy Awards in any way. If you login with your Facebook account on this site we will save your name and display it along with your choices after you vote. If you're not cool with that don't login.
