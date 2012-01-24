@@ -109,7 +109,7 @@ $(document).ready(function() {
         type: "POST",
         url: '/users',
         data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
-        always: function() {
+        success: function(response) {
           setupSelector();
           $("#login").hide();
           $("#subtitle").show();
@@ -118,6 +118,21 @@ $(document).ready(function() {
           loadUsersVotes();
           if( $.inArray(Number(fbUserInfo["id"]), invited) >= 0 ) {
             $('#nav li.custom').show();
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          console.log(thrownError);
+          if(thrownError['fbid'] == "has already been taken")
+            {
+            setupSelector();
+            $("#login").hide();
+            $("#subtitle").show();
+            $("#selections").show();
+            setupSelector();
+            loadUsersVotes();
+            if( $.inArray(Number(fbUserInfo["id"]), invited) >= 0 ) {
+              $('#nav li.custom').show();
+            }
           }
         }
       });
