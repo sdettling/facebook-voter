@@ -39,11 +39,33 @@ h2
       line-height: 60px
   #nav
     display: none
-    height: 40px
-    margin: 0px 20px
+    height: 24px
+    margin: 0px 20px 20px 20px
+    position: relative
+    ul
+      li
+        float: left
+        background-color: #555
+        height: 24px
+        padding: 0px 8px
+        margin-right: 10px
+        a
+          line-height: 24px
+          color: #fff
+          text-decoration: none
+          &:hover
+            text-decoration: underline
+    .saving
+      display: none
+      position: absolute
+      top: 0px
+      right: 0px
+      width: 24px
+      height: 24px
+      background: image_url("save.gif")
   #login
-    margin: 0px 20px
-    height: 40px
+    margin: 0px 20px 20px 20px
+    height: 22px
     #fb-login
       width: 71px
       height: 22px
@@ -55,13 +77,12 @@ h2
     p
       line-height: 22px
   #results
-    display: none
+    display: block
     width: 940px
     height: 333px
     margin: 20px
     .graph
       font-size: 10px
-      
       .y-axis
         font-family: Arial, Helvetica, sans-serif
         width: 40px
@@ -77,6 +98,14 @@ h2
           border-bottom: 1px solid #ccc
           margin-left: 20px
           height: 25px
+      .blank-item
+        width: 40px
+        float: left
+        .bar
+          height: 233px
+        .info
+          border-top: 1px solid #999
+          height: 100px
       .item
         width: 120px
         float: left
@@ -85,20 +114,27 @@ h2
           height: 233px
           position: relative
           .value
-            height: 150px
-            width: 100px
-            background-color: #555
+            width: 50px
+            background-color: #777
             position: absolute
-            right: 0px
+            left: 10px
             bottom: 0px
         .info
+          border-top: 1px solid #999
           height: 100px
           padding: 10px
+          line-height: 11px
           .pedestal
             width: 25px
-            height: 50px
+            height: 37px
             float: left
-            margin-right: 10px
+            margin-right: 7px
+          p.title
+            margin-bottom: 5px
+            color: #333
+          p.score
+            margin-bottom: 0px
+            color: #999
   #selector
     position: relative
     #selections
@@ -127,7 +163,7 @@ h2
           p
             padding-top: 30px
     #choices
-      margin: 20px 0px 0px 20px
+      margin: 0px 0px 0px 20px
       overflow: auto
       width: 100%
       .movie

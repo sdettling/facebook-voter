@@ -1,5 +1,4 @@
 #container
-  -#= link_to "login", "#", id: "login"
   #mainContent
     #header
       %h1
@@ -9,9 +8,12 @@
       %p
         Which of these nominees deserve to win Best Picture at the Oscars this year? Click on the Facebook log in button to vote for your favorites.
     #nav
-      = link_to "Show Results", "#", id: "results-toggle"
+      %ul
+        %li
+          = link_to "Show Results", "#", id: "results-toggle"
+        %li
+          = link_to "Show Watch-A-Thon Results", "#", id: "custom-results-toggle"
       .saving
-
     #results
       .graph
         .y-axis
@@ -29,35 +31,10 @@
           .sub-notch
           .notch
             0%
-        .item
+        .blank-item
           .bar
-            .value
           .info
-            .pedestal
-            %p
-              This is the title of the movie
-            %p
-              1000 points
-        .item.alt
-          .bar
-            .value
-          .info
-        .item
-          .bar
-            .value
-          .info
-        .item.alt
-          .bar
-            .value
-          .info
-        .item
-          .bar
-            .value
-          .info
-        .item.alt
-          .bar
-            .value
-          .info
+        
     #selector
       %ol#selections
         %li#vote1
