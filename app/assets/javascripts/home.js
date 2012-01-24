@@ -13,19 +13,21 @@ $(document).ready(function() {
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
 
-  FB.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-      var uid = response.authResponse.userID;
-      var accessToken = response.authResponse.accessToken;
-      $("#login").hide();
-      initializeUser();
-    } else if (response.status === 'not_authorized') {
-      // the user is logged in to Facebook,
-      //but not connected to the app
-    } else {
-      // the user isn't even logged in to Facebook.
-    }
-   });
+  window.fbAsyncInit = function() {
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        var uid = response.authResponse.userID;
+        var accessToken = response.authResponse.accessToken;
+        $("#login").hide();
+        initializeUser();
+      } else if (response.status === 'not_authorized') {
+        // the user is logged in to Facebook,
+        //but not connected to the app
+      } else {
+        // the user isn't even logged in to Facebook.
+      }
+    });
+  }
 
   //get the list of movies and populate them
   $.ajax({
