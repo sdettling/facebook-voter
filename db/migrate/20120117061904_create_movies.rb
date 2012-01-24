@@ -6,8 +6,8 @@ class CreateMovies < ActiveRecord::Migration
       t.string :url1
       t.string :url2
       t.string :director
-      t.string :cast
-      t.string :synopsis
+      t.text :cast
+      t.text :synopsis
 
       t.timestamps
     end

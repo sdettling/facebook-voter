@@ -2,12 +2,13 @@ $(document).ready(function() {
   var movies = null;
   var users = null;
   var votes = null;
-  var fbUserInfo = {"id": "12345", "name": "Steve"};
+  var fbUserInfo = null;
   var choices = new Array("","","");
   var chosenIDs = new Array("","","");
   var $selections = $( "#selections" );
   var saving = false;
-  var movieScores = new Array();
+  var custom = false;
+  var invited = [19600245,26904108,36400111,36400222,36402585,36405216,36406896,36409763,68302058,508750472,100000313172773,100000645482115,16320868,36400025,36400078,36400272,36400277,36400405,36400913,36401292,36402678,36403066,36403766,36407513,198900007,511794795,617647469,625495213,783068255,1044233749,36400432,553586954,1782894834,36400584,36400937,79201405,592801990,736950829,1157138915,1450489800,100000495870476];
 
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
@@ -20,6 +21,7 @@ $(document).ready(function() {
       $.each( movies, function(i, movie){
          $.tmpl("movie-div", movie).appendTo("#choices");
       });
+      scoreMovies(custom);
     }
   });
 
@@ -33,23 +35,41 @@ $(document).ready(function() {
   });*/
 
   //get an object of all the votes
-  $.ajax({
+  /*$.ajax({
     url: '/votes',
     success: function( data ) {
       votes = data;
-      console.log(votes);
+      //console.log(votes);
     }
+  });*/
+
+  $("#results-refresh").click(function(e) {
+    e.preventDefault();
+    scoreMovies(custom);
+  });
+
+  $("#custom-results-toggle").click(function(e) {
+    e.preventDefault();
+    custom = !custom;
+    if (custom) {
+      $(this).html("View All Results");
+    }
+    else {
+      $(this).html("View Only Watch-A-Thon Results");
+    }
+    scoreMovies(custom);
   });
 
   $("#fb-login").click(function(e) {
     e.preventDefault();
-    
-    $("#login").hide();
-    $("#nav").show();
+
+    /*$("#login").hide();
+    $("#subtitle").show();
     $("#selections").show();
-    
-    loadUsersVotes();
-    /*FB.login(function(response) {
+    setupSelector();
+    loadUsersVotes();*/
+
+    FB.login(function(response) {
       if (response.authResponse) {
         FB.api('/me', function(response) {
           fbUserInfo = response;
@@ -60,43 +80,72 @@ $(document).ready(function() {
             always: function() {
               setupSelector();
               $("#login").hide();
-              $("#nav").show();
+              $("#subtitle").show();
               $("#selections").show();
+              setupSelector();
+              loadUsersVotes();
+              if( $.inArray(Number(fbUserInfo["id"]), invited) >= 0 ) {
+                $('#nav li.custom').show();
+              }
             }
           });
         });
       } else {
         alert('Facebook login was unsuccessful. Please try again.');
       }
-    });*/
+    });
   });
 
-  function scoreMovies() {
+  function generateGraph(movieScores, totalPoints) {
+    $('.graph .item').remove();
+    $.each( movieScores, function(i, movie){
+      var height = (movie['points']/totalPoints)*208;
+      $.tmpl("graph-item", {"barheight": height, "slug": movie['slug'], "name": movie['name'], "points": movie['points'] }).appendTo(".graph");
+    });
+  }
+
+  function scoreMovies(custom) {
     $.ajax({
       url: '/votes',
       success: function( data ) {
         votes = data;
         var totalPoints = 0;
+        var movieScores = [];
+        var customPoints = 0;
+        var customScores = [];
         $.each( movies, function(i, movie){
           var movieCount = 0;
+          var customCount = 0;
           $.each( votes, function(j, vote){
             if(vote['movie'] == movie['id']) {
               if(vote['rank'] == 3) { movieCount += 1; }
               else if(vote['rank'] == 2) { movieCount += 2; }
               else if(vote['rank'] == 1) { movieCount += 3; }
             }
+            if(  (vote['movie'] == movie['id'])&&(($.inArray(vote['voter'], invited))>=0 )  ) {
+              if(vote['rank'] == 3) { customCount += 1; }
+              else if(vote['rank'] == 2) { customCount += 2; }
+              else if(vote['rank'] == 1) { customCount += 3; }
+            }
           });
           totalPoints += movieCount;
+          customPoints += customCount;
           movieScores.push( {"slug": movie['slug'], "name": movie['name'], "points": movieCount} );
+          customScores.push( {"slug": movie['slug'], "name": movie['name'], "points": customCount} );
         });
         movieScores.sort(function(a, b){
           return b.points-a.points
         });
-        $('.graph .item').remove();
-        $.each( movieScores, function(i, movie){
-          var height = (movie['points']/totalPoints)*208;
-          $.tmpl("graph-item", {"barheight": height, "slug": movie['slug'], "name": movie['name'], "points": movie['points'] }).appendTo(".graph");
+        customScores.sort(function(a, b){
+          return b.points-a.points
         });
+        if (custom)
+        {
+          generateGraph(customScores, customPoints);
+        }
+        else {
+          generateGraph(movieScores, totalPoints);
+        }
       }
     });
   }
@@ -114,7 +163,7 @@ $(document).ready(function() {
         });
       }
     });
-    
+
     $.each( choices, function(i, choice){
       if(choice != ""){
         $item = $("#"+choice);
@@ -127,7 +176,6 @@ $(document).ready(function() {
         $choice.find(".instructions").fadeOut('fast');
       }
     });
-    setupSelector();
   }
 
   function setupSelector() {
@@ -169,6 +217,7 @@ $(document).ready(function() {
       success: function() {
         saving = false;
         $(".saving").hide();
+        scoreMovies(custom);
       }
     });
   }
@@ -176,14 +225,14 @@ $(document).ready(function() {
   function removeSelection( $item ) {
     if (!saving) {
       saving = true;
-      $(".saving").show();
       $item.fadeOut('fast',function() {
         $item
           .appendTo( $choices )
           .fadeIn('fast');
       });
-      choices[$.inArray($item[0].id, choices)] = "";
-      choices[$.inArray($item[0].attr("data-id"), chosenIDs)] = "";
+      choices[$.inArray($item.id, choices)] = "";
+      chosenIDs[$.inArray($item.attr("data-id"), chosenIDs)] = "";
+
       saveVotes();
     }
   }
@@ -191,7 +240,6 @@ $(document).ready(function() {
   function addSelection( $item, $choice ) {
     if (!saving) {
       saving = true;
-      $(".saving").show();
       var movieName = $item[0].id;
       var choiceNumber = $choice[0].id.replace("vote", "");
       var existingMovie = choices[(choiceNumber-1)];
@@ -212,9 +260,9 @@ $(document).ready(function() {
       }
       else if (existingMovie != "")
       {
+        var $oldItem = $("#"+existingMovie);
         if ((existingMovie != movieName)&&( droppedArrayPos > -1 ))
         {
-          var $oldItem = $("#"+existingMovie);
           $oldItem.fadeOut('fast',function() {
             $oldItem
               .appendTo( $("#vote"+(droppedArrayPos+1)))
@@ -232,7 +280,11 @@ $(document).ready(function() {
         }
         else
         {
-          removeSelection( $("#"+existingMovie) );
+          $oldItem.fadeOut('fast',function() {
+            $oldItem
+              .appendTo( $choices )
+              .fadeIn('fast');
+          });
           $item.fadeOut('fast',function() {
             $item
               .appendTo( $choice )
@@ -245,7 +297,5 @@ $(document).ready(function() {
       saveVotes();
     }
   }
-
-scoreMovies();
 
 });

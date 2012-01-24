@@ -7,13 +7,35 @@
       = link_to "Login", "#", id: "fb-login"
       %p
         Which of these nominees deserve to win Best Picture at the Oscars this year? Click on the Facebook log in button to vote for your favorites.
+    #subtitle
+      %p
+        Drag the movies around to make your selections.
+    #selector
+      %ol#selections
+        %li#vote1
+          .pedestal
+          %h2 First Choice
+          %p.instructions
+            drag your favorite movie into this box, 3 points
+        %li#vote2
+          .pedestal
+          %h2 Second Choice
+          %p.instructions
+            drag your second favorite movie into this box, 2 points
+        %li#vote3
+          .pedestal
+          %h2 Third Choice
+          %p.instructions
+            drag your third favorite movie into this box, 1 point
+      #choices
     #nav
+      %h2
+        The Results
       %ul
         %li
-          = link_to "Show Results", "#", id: "results-toggle"
-        %li
-          = link_to "Show Watch-A-Thon Results", "#", id: "custom-results-toggle"
-      .saving
+          = link_to "Refresh Results", "#", id: "results-refresh"
+        %li.custom
+          = link_to "View Only Watch-A-Thon Results", "#", id: "custom-results-toggle"
     #results
       .graph
         .y-axis
@@ -31,28 +53,7 @@
           .sub-notch
           .notch
             0%
-        .blank-item
-          .bar
-          .info
-        
-    #selector
-      %ol#selections
-        %li#vote1
-          .pedestal
-          %h2 First Choice
-          %p.instructions
-            drag your favorite movie into this box
-        %li#vote2
-          .pedestal
-          %h2 Second Choice
-          %p.instructions
-            drag your second favorite movie into this box
-        %li#vote3
-          .pedestal
-          %h2 Third Choice
-          %p.instructions
-            drag your third favorite movie into this box
-      #choices
-  #footer
-    %p
-      This website has no affiliations with The Academy of Motion Picture Arts and Sciences or any other organization. It's just a fun way to see which movies a random sampling of people enjoyed the most this year. Votes on this site have no meaning and do not affect the outcome of the Academy Awards in any way. If you login with your Facebook account on this site we will save your name and display it along with your choices after you vote. If you're not cool with that don't login.
+    #footer
+      %p
+        This website has no affiliations with The Academy of Motion Picture Arts and Sciences or any other organization. It's just a fun way to see which movies a random sampling of people enjoyed the most this year. Votes on this site have no meaning and do not affect the outcome of the Academy Awards in any way. If you login with your Facebook account on this site we will save your name and your choices after you vote. Developed by
+        = link_to "Stephen Dettling", "http://sdettling.com", target: "_blank"

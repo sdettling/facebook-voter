@@ -38,9 +38,8 @@ h2
     h1
       line-height: 60px
   #nav
-    display: none
-    height: 24px
-    margin: 0px 20px 20px 20px
+    height: 54px
+    margin: 0px 20px
     position: relative
     ul
       li
@@ -55,6 +54,8 @@ h2
           text-decoration: none
           &:hover
             text-decoration: underline
+        &.custom
+          display: none
     .saving
       display: none
       position: absolute
@@ -63,6 +64,12 @@ h2
       width: 24px
       height: 24px
       background: image_url("save.gif")
+  #subtitle
+    display: none
+    margin: 0px 20px 20px 20px
+    height: 22px
+    p
+      line-height: 22px
   #login
     margin: 0px 20px 20px 20px
     height: 22px
@@ -77,10 +84,11 @@ h2
     p
       line-height: 22px
   #results
+    clear: both
     display: block
     width: 940px
     height: 333px
-    margin: 20px
+    margin: 10px 20px 20px 20px
     .graph
       font-size: 10px
       .y-axis
@@ -99,7 +107,7 @@ h2
           margin-left: 20px
           height: 25px
       .blank-item
-        width: 40px
+        width: 0px
         float: left
         .bar
           height: 233px
@@ -107,7 +115,7 @@ h2
           border-top: 1px solid #999
           height: 100px
       .item
-        width: 120px
+        width: 100px
         float: left
         &.alt
         .bar
@@ -117,13 +125,14 @@ h2
             width: 50px
             background-color: #777
             position: absolute
-            left: 10px
+            left: 25px
             bottom: 0px
         .info
           border-top: 1px solid #999
-          height: 100px
-          padding: 10px
+          height: 80px
+          padding: 10px 0px 10px 10px
           line-height: 11px
+          position: relative
           .pedestal
             width: 25px
             height: 37px
@@ -133,10 +142,14 @@ h2
             margin-bottom: 5px
             color: #333
           p.score
+            position: absolute
+            top: 60px
+            left: 10px
             margin-bottom: 0px
-            color: #999
+            color: #888
   #selector
     position: relative
+    padding-bottom: 20px
     #selections
       display: none
       height: 178px
@@ -169,7 +182,7 @@ h2
       .movie
         width: 120px
         height: 212px
-        background-color: #eeeeee
+        background-color: #ddd
         margin: 0px 20px 20px 0px
         float: left
         .pedestal
@@ -183,5 +196,5 @@ h2
           color: #fff
           h2
             color: #fff
-#footer
-  display: none
+  #footer
+    margin: 0px 20px

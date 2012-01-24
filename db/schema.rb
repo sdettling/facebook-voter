@@ -19,10 +19,10 @@ ActiveRecord::Schema.define(:version => 20120117061936) do
     t.string   "url1"
     t.string   "url2"
     t.string   "director"
-    t.string   "cast"
-    t.string   "synopsis"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "cast"
+    t.text     "synopsis"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(:version => 20120117061936) do
     t.integer  "voter"
     t.integer  "movie"
     t.integer  "rank"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
