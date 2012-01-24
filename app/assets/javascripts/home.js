@@ -46,7 +46,6 @@ $(document).ready(function() {
          $.tmpl("movie-div", movie).appendTo("#choices");
       });
       scoreMovies(custom);
-      initializeUser()
     }
   });
 
