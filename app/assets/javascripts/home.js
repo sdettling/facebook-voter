@@ -13,7 +13,7 @@ $(document).ready(function() {
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
 
-  window.fbAsyncInit = function() {
+  function checkLogin() {
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         var uid = response.authResponse.userID;
