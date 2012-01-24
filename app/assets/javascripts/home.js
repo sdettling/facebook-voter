@@ -13,7 +13,14 @@ $(document).ready(function() {
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
 
-  function checkLogin() {
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '248504555218072', // App ID
+      channelUrl : '//celebratecinema.com/channel.html', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         var uid = response.authResponse.userID;
@@ -27,7 +34,8 @@ $(document).ready(function() {
         // the user isn't even logged in to Facebook.
       }
     });
-  }
+  };
+
 
   //get the list of movies and populate them
   $.ajax({

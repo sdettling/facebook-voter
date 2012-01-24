@@ -18,16 +18,6 @@
   %body
     #fb-root
     :javascript
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '248504555218072', // App ID
-          channelUrl : '//celebratecinema.com/channel.html', // Channel File
-          status     : true, // check login status
-          cookie     : true, // enable cookies to allow the server to access the session
-          xfbml      : true  // parse XFBML
-        });
-        checkLogin();
-      };
       (function(d){
         var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
         js = d.createElement('script'); js.id = id; js.async = true;
