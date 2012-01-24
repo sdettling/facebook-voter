@@ -2,7 +2,7 @@ $(document).ready(function() {
   var movies = null;
   var users = null;
   var votes = null;
-  var fbUserInfo = null;
+  var fbUserInfo = {"name": "steve", "id": "36400025"};
   var choices = new Array("","","");
   var chosenIDs = new Array("","","");
   var $selections = $( "#selections" );
@@ -46,6 +46,7 @@ $(document).ready(function() {
          $.tmpl("movie-div", movie).appendTo("#choices");
       });
       scoreMovies(custom);
+      initializeUser()
     }
   });
 
@@ -120,9 +121,8 @@ $(document).ready(function() {
             $('#nav li.custom').show();
           }
         },
-        error: function(xhr, ajaxOptions, thrownError) {
-          console.log(thrownError);
-          if(thrownError['fbid'] == "has already been taken")
+        error: function(response) {
+          if(response['responseText'] == '{"fbid":["has already been taken"]}')
             {
             setupSelector();
             $("#login").hide();
