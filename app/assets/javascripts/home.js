@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>')
   var movies = null;
   var users = null;
   var votes = null;
@@ -9,6 +8,8 @@ $(document).ready(function() {
   var $selections = $( "#selections" );
   var saving = false;
 
+  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
+
   //get the list of movies and populate them
   $.ajax({
     url: '/movies',
@@ -16,6 +17,7 @@ $(document).ready(function() {
       movies = data;
       $.each( movies, function(i, movie){
          $.tmpl("movie-div", movie).appendTo("#choices");
+         //$('<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>').appendTo("#choices");
       });
     }
   });
@@ -34,13 +36,16 @@ $(document).ready(function() {
     url: '/votes',
     success: function( data ) {
       votes = data;
-      console.log(votes);
     }
   });
 
   $("#fb-login").click(function(e) {
     e.preventDefault();
-    FB.login(function(response) {
+    setupSelector();
+    $("#login").hide();
+    $("#nav").show();
+    $("#selections").show();
+    /*FB.login(function(response) {
       if (response.authResponse) {
         FB.api('/me', function(response) {
           fbUserInfo = response;
@@ -49,6 +54,7 @@ $(document).ready(function() {
             url: '/users',
             data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
             always: function() {
+              setupSelector();
               $("#login").hide();
               $("#nav").show();
               $("#selections").show();
@@ -58,7 +64,7 @@ $(document).ready(function() {
       } else {
         alert('Facebook login was unsuccessful. Please try again.');
       }
-    });
+    });*/
   });
 
   function setupSelector() {
