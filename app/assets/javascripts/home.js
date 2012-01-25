@@ -14,6 +14,14 @@ $(document).ready(function() {
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
   $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
 
+  if(Modernizr.touch){
+     $("#login").hide();
+     $("#subtitle").html('<p style="color: #ff0000;">Sorry, this site does not support touch devices.</p>');
+     $("#subtitle").show();
+     // bind to touchstart, touchmove, etc and watch `event.streamId`
+  } else {
+  }
+
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '248504555218072', // App ID
@@ -261,6 +269,9 @@ $(document).ready(function() {
         $choice.find(".instructions").fadeOut('fast');
       }
     });
+    if( choices[0] != "" ) {
+      $('#nav li.post').show();
+    }
   }
 
   function setupSelector() {
