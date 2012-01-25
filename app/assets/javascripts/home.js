@@ -317,6 +317,9 @@ $(document).ready(function() {
       });
       choices[$.inArray($item.id, choices)] = "";
       chosenIDs[$.inArray($item.attr("data-id"), chosenIDs)] = "";
+      if(choices[0] == ""){
+        $('#nav li.post').hide();
+      }
 
       saveVotes();
     }
@@ -330,6 +333,9 @@ $(document).ready(function() {
       var existingMovie = choices[(choiceNumber-1)];
       var droppedArrayPos = $.inArray(movieName, choices);
       var existingArrayPos = $.inArray(existingMovie, choices);
+      if(choiceNumber == 1){
+        $('#nav li.post').show();
+      }
       if (existingMovie == "") {
         $item.fadeOut('fast',function() {
           $item

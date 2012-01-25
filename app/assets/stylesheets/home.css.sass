@@ -131,6 +131,9 @@ h2
             text-decoration: underline
         &.custom
           display: none
+        &.post
+          display: none
+          background-color: #506695
     .saving
       display: none
       position: absolute
@@ -145,6 +148,7 @@ h2
     height: 22px
     p
       line-height: 22px
+      font-size: 14px
   #login
     margin: 0px 20px 20px 20px
     height: 22px
@@ -158,6 +162,7 @@ h2
       margin-right: 10px
     p
       line-height: 22px
+      font-size: 14px
   #results
     clear: both
     display: block
@@ -256,12 +261,15 @@ h2
       width: 100%
       .movie
         width: 120px
-        height: 212px
+        height: 217px
         background-color: #ddd
         margin: 0px 20px 20px 0px
         float: left
         .pedestal
           margin-bottom: 10px
+        p
+          color: #333
+          margin-bottom: 0px
     #selections
       li
         &.state-highlight
