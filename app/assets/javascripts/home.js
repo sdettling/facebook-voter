@@ -2,7 +2,7 @@ $(document).ready(function() {
   var movies = null;
   var users = null;
   var votes = null;
-  var fbUserInfo = {"name": "steve", "id": "36400025"};
+  var fbUserInfo = null;
   var choices = new Array("","","");
   var chosenIDs = new Array("","","");
   var $selections = $( "#selections" );
@@ -66,6 +66,11 @@ $(document).ready(function() {
       //console.log(votes);
     }
   });*/
+  
+  $("#post-story").click(function(e) {
+    e.preventDefault();
+    postToFeed();
+  });
 
   $("#results-refresh").click(function(e) {
     e.preventDefault();
@@ -136,6 +141,19 @@ $(document).ready(function() {
         }
       });
     });
+  }
+  
+  function postToFeed() {
+    var firstChoice = $("#"+choices[0]).find('p').html();
+    var obj = {
+      method: 'feed',
+      link: 'http://cinemacelebration.com/',
+      picture: 'http://cinemacelebration.com/assets/'+choices[0]+'.jpeg',
+      name: 'The Academy\'s Best Pictures of 2011',
+      caption: firstChoice+' is my pick for best picture this year.',
+      description: 'Who do you think will take home the Oscar this year? Cast your vote.'
+    };
+    FB.ui(obj);
   }
 
   function generateGraph(movieScores, totalPoints) {
