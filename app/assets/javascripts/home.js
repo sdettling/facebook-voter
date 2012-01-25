@@ -10,8 +10,9 @@ $(document).ready(function() {
   var custom = false;
   var invited = [19600245,26904108,36400111,36400222,36402585,36405216,36406896,36409763,68302058,508750472,100000313172773,100000645482115,16320868,36400025,36400078,36400272,36400277,36400405,36400913,36401292,36402678,36403066,36403766,36407513,198900007,511794795,617647469,625495213,783068255,1044233749,36400432,553586954,1782894834,36400584,36400937,79201405,592801990,736950829,1157138915,1450489800,100000495870476];
 
-  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
+  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
+  $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -46,6 +47,10 @@ $(document).ready(function() {
          $.tmpl("movie-div", movie).appendTo("#choices");
       });
       scoreMovies(custom);
+      $(".movie .more-info").click(function(e) {
+        e.preventDefault();
+        openMovieDetail($(this).parents('.movie')[0].id);
+      });
     }
   });
 
@@ -66,7 +71,7 @@ $(document).ready(function() {
       //console.log(votes);
     }
   });*/
-  
+
   $("#post-story").click(function(e) {
     e.preventDefault();
     postToFeed();
@@ -75,6 +80,11 @@ $(document).ready(function() {
   $("#results-refresh").click(function(e) {
     e.preventDefault();
     scoreMovies(custom);
+  });
+
+  $("#detail-close").click(function(e){
+    e.preventDefault();
+    closeMovieDetail();
   });
 
   $("#custom-results-toggle").click(function(e) {
@@ -106,6 +116,21 @@ $(document).ready(function() {
       }
     });
   });
+
+  function openMovieDetail(slug){
+    $.each( movies, function(i, movie){
+      if(movie['slug'] == slug) {
+        $("#detail-template").html("");
+        $.tmpl("detail", movie).appendTo("#detail-template");
+      }
+    });
+    $('#moviedetailbg').show();
+    $('#moviedetail').show();
+  }
+  function closeMovieDetail(){
+    $('#moviedetailbg').hide();
+    $('#moviedetail').hide();
+  }
 
   function initializeUser() {
     FB.api('/me', function(response) {
@@ -142,7 +167,7 @@ $(document).ready(function() {
       });
     });
   }
-  
+
   function postToFeed() {
     var firstChoice = $("#"+choices[0]).find('p').html();
     var obj = {
