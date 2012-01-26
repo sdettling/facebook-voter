@@ -59,7 +59,6 @@ $(document).ready(function() {
         e.preventDefault();
         openMovieDetail($(this).parents('.movie')[0].id);
       });
-	  initializeUser()
     }
   });
 
