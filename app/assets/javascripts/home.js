@@ -8,7 +8,7 @@ $(document).ready(function() {
   var $selections = $( "#selections" );
   var saving = false;
   var custom = false;
-  var invited = [19600245,26904108,36400111,36400222,36402585,36405216,36406896,36409763,68302058,508750472,100000313172773,100000645482115,16320868,36400025,36400078,36400272,36400277,36400405,36400913,36401292,36402678,36403066,36403766,36407513,198900007,511794795,617647469,625495213,783068255,1044233749,36400432,553586954,1782894834,36400584,36400937,79201405,592801990,736950829,1157138915,1450489800,100000495870476];
+  var invited = ["19600245","26904108","36400111","36400222","36402585","36405216","36406896","36409763","68302058","508750472","100000313172773","100000645482115","16320868","36400025","36400078","36400272","36400277","36400405","36400913","36401292","36402678","36403066","36403766","36407513","198900007","511794795","617647469","625495213","783068255","1044233749","36400432","553586954","1782894834","36400584","36400937","79201405","592801990","736950829","1157138915","1450489800","100000495870476"];
 
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
@@ -59,6 +59,7 @@ $(document).ready(function() {
         e.preventDefault();
         openMovieDetail($(this).parents('.movie')[0].id);
       });
+	  initializeUser()
     }
   });
 
@@ -154,7 +155,7 @@ $(document).ready(function() {
           $("#selections").show();
           setupSelector();
           loadUsersVotes();
-          if( $.inArray(Number(fbUserInfo["id"]), invited) >= 0 ) {
+          if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
             $('#nav li.custom').show();
           }
         },
@@ -167,7 +168,7 @@ $(document).ready(function() {
             $("#selections").show();
             setupSelector();
             loadUsersVotes();
-            if( $.inArray(Number(fbUserInfo["id"]), invited) >= 0 ) {
+            if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
               $('#nav li.custom').show();
             }
           }

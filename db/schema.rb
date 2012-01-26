@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120117061936) do
+ActiveRecord::Schema.define(:version => 20120126051927) do
 
   create_table "movies", :force => true do |t|
     t.string   "name"
@@ -19,26 +19,26 @@ ActiveRecord::Schema.define(:version => 20120117061936) do
     t.string   "url1"
     t.string   "url2"
     t.string   "director"
-    t.text     "cast"
-    t.text     "synopsis"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "cast"
+    t.string   "synopsis"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
-    t.integer  "fbid"
+    t.string   "fbid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "votes", :force => true do |t|
-    t.integer  "voter"
+    t.string   "voter"
     t.integer  "movie"
     t.integer  "rank"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
