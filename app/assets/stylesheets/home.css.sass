@@ -249,33 +249,36 @@ h2
     display: none
     margin: 10px 20px 80px 20px
     position: relative
-    ul
-      height: 50px
-      li
-        margin-top: 10px
-        float: left
-        width: 200px
-        margin-right: 20px
-        .user-image
-          height: 50px
-          width: 50px
-          background-color: #ccc
-          margin-right: 10px
+    .friend
+      &:nth-child(even)
+        background: #ccc
+      ul
+        height: 50px
+        li
+          padding: 10px 0px
           float: left
-        .number
-          font-size: 35px
-          font-style: italic
-          float: left
-          width: 50px
-          height: 50px
-          line-height: 25px
-        .image
-          height: 50px
-          width: 34px
-          background-color: #ccc
-          margin-right: 10px
-          float: left
-  
+          width: 200px
+          margin-right: 20px
+          .user-image
+            height: 50px
+            width: 50px
+            background-color: #ccc
+            margin-right: 10px
+            float: left
+          .number
+            font-size: 35px
+            font-style: italic
+            float: left
+            width: 50px
+            height: 50px
+            line-height: 25px
+          .image
+            height: 50px
+            width: 34px
+            background-color: #999
+            margin-right: 10px
+            float: left
+
   #selector
     position: relative
     padding-bottom: 20px

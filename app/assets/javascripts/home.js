@@ -14,8 +14,8 @@ $(document).ready(function() {
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
   $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
-  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1slug}-m.jpeg" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2slug}-m.jpeg" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3slug}-m.jpeg" /></div><p>${movie3name}</p></li></ul></div>');
-  
+  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image">${movie1image}</div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image">${movie2image}</div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image">${movie3image}</div><p>${movie3name}</p></li></ul></div>');
+
   if(Modernizr.touch){
      $("#login").hide();
      $("#subtitle").html('<p style="color: #ff0000;">Sorry, this site does not support touch devices.</p>');
@@ -81,7 +81,7 @@ $(document).ready(function() {
       //console.log(votes);
     }
   });*/
-  
+
   $("#friends-refresh").click(function(e) {
     e.preventDefault();
     showFriends();
@@ -150,25 +150,12 @@ $(document).ready(function() {
   function initializeUser() {
     FB.api('/me', function(response) {
       fbUserInfo = response;
-      $.ajax({
-        type: "POST",
-        url: '/users',
-        data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
-        success: function(response) {
-          setupSelector();
-          $("#login").hide();
-          $("#subtitle").show();
-          $("#selections").show();
-          setupSelector();
-          loadUsersVotes();
-          getUserImages();
-          if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
-            $('#nav li.custom').show();
-          }
-        },
-        error: function(response) {
-          if(response['responseText'] == '{"fbid":["has already been taken"]}')
-            {
+      if (fbUserInfo['id'] != null) {
+        $.ajax({
+          type: "POST",
+          url: '/users',
+          data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
+          success: function(response) {
             setupSelector();
             $("#login").hide();
             $("#subtitle").show();
@@ -179,9 +166,24 @@ $(document).ready(function() {
             if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
               $('#nav li.custom').show();
             }
+          },
+          error: function(response) {
+            if(response['responseText'] == '{"fbid":["has already been taken"]}')
+              {
+              setupSelector();
+              $("#login").hide();
+              $("#subtitle").show();
+              $("#selections").show();
+              setupSelector();
+              loadUsersVotes();
+              getUserImages();
+              if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
+                $('#nav li.custom').show();
+              }
+            }
           }
-        }
-      });
+        });
+      }
     });
   }
 
@@ -221,27 +223,29 @@ $(document).ready(function() {
       }
     });
   }
-  
+
   function showFriends() {
     $("#friend-results").html("");
     $.each( users, function(i, user){
-      var userInfo = {"image": user['image'], "name": user['name'], "movie1slug": "", "movie1name": "", "movie2slug": "", "movie2name": "", "movie3slug": "", "movie3name": ""}
+      var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "", "movie1name": "", "movie2image": "", "movie2name": "", "movie3image": "", "movie3name": ""}
       $.each( votes, function(j, vote){
         if(vote['voter'] == user['fbid']) {
           $.each( movies, function(k, movie){
             if(vote['movie'] == movie['id'])
             {
-              if (vote['rank'] == 1){
-                userInfo['movie1slug'] = movie['slug'];
-                userInfo['movie1name'] = movie['name'];
-              }
-              else if(vote['rank'] == 2){
-                userInfo['movie2slug'] = movie['slug'];
-                userInfo['movie2name'] = movie['name'];
-              }
-              else if(vote['rank'] == 3){
-                userInfo['movie3slug'] = movie['slug'];
-                userInfo['movie3name'] = movie['name'];
+              if (vote['movie'] != null) {
+                if (vote['rank'] == 1){
+                  userInfo['movie1image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie1name'] = movie['name'];
+                }
+                else if(vote['rank'] == 2){
+                  userInfo['movie2image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie2name'] = movie['name'];
+                }
+                else if(vote['rank'] == 3){
+                  userInfo['movie3image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie3name'] = movie['name'];
+                }
               }
               //choices[((vote['rank'])-1)] = movie['slug'];
             }
@@ -253,7 +257,7 @@ $(document).ready(function() {
     });
     $("#friend-results").show();
   }
-  
+
   function scoreMovies(custom) {
     $.ajax({
       url: '/votes',
@@ -336,7 +340,7 @@ $(document).ready(function() {
       $("#friend-nav").show();
       //showFriends();
     }
-    
+
   }
 
   function setupSelector() {
@@ -370,17 +374,19 @@ $(document).ready(function() {
   }
 
   function saveVotes() {
-    var votes = { "selections": {"user": fbUserInfo['id'], "vote1": chosenIDs[0], "vote2": chosenIDs[1], "vote3": chosenIDs[2] }};
-    $.ajax({
-      type: "POST",
-      url: '/votes',
-      data: votes,
-      success: function() {
-        saving = false;
-        $(".saving").hide();
-        scoreMovies(custom);
-      }
-    });
+    if (fbUserInfo['id'] != null) {
+      var votes = { "selections": {"user": fbUserInfo['id'], "vote1": chosenIDs[0], "vote2": chosenIDs[1], "vote3": chosenIDs[2] }};
+      $.ajax({
+        type: "POST",
+        url: '/votes',
+        data: votes,
+        success: function() {
+          saving = false;
+          $(".saving").hide();
+          scoreMovies(custom);
+        }
+      });
+    }
   }
 
   function removeSelection( $item ) {
@@ -396,7 +402,6 @@ $(document).ready(function() {
       if(choices[0] == ""){
         $('#nav li.post').hide();
       }
-
       saveVotes();
     }
   }
