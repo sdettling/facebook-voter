@@ -14,7 +14,7 @@ $(document).ready(function() {
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
   $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
-  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image">${movie1image}</div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image">${movie2image}</div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image">${movie3image}</div><p>${movie3name}</p></li></ul></div>');
+  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}-m.jpeg" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}-m.jpeg" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}-m.jpeg" /></div><p>${movie3name}</p></li></ul></div>');
 
   if(Modernizr.touch){
      $("#login").hide();
@@ -227,7 +227,7 @@ $(document).ready(function() {
   function showFriends() {
     $("#friend-results").html("");
     $.each( users, function(i, user){
-      var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "", "movie1name": "", "movie2image": "", "movie2name": "", "movie3image": "", "movie3name": ""}
+      var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "blank", "movie1name": "", "movie2image": "blank", "movie2name": "", "movie3image": "blank", "movie3name": ""}
       $.each( votes, function(j, vote){
         if(vote['voter'] == user['fbid']) {
           $.each( movies, function(k, movie){
@@ -235,15 +235,15 @@ $(document).ready(function() {
             {
               if (vote['movie'] != null) {
                 if (vote['rank'] == 1){
-                  userInfo['movie1image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie1image'] = movie['slug'];
                   userInfo['movie1name'] = movie['name'];
                 }
                 else if(vote['rank'] == 2){
-                  userInfo['movie2image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie2image'] = movie['slug'];
                   userInfo['movie2name'] = movie['name'];
                 }
                 else if(vote['rank'] == 3){
-                  userInfo['movie3image'] = '<img src="/assets/'+movie['slug']+'-m.jpeg" />';
+                  userInfo['movie3image'] = movie['slug'];
                   userInfo['movie3name'] = movie['name'];
                 }
               }
@@ -252,7 +252,6 @@ $(document).ready(function() {
           });
         }
       });
-      console.log(userInfo)
       $.tmpl("friend", userInfo).appendTo("#friend-results");
     });
     $("#friend-results").show();
