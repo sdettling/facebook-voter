@@ -84,6 +84,7 @@ $(document).ready(function() {
 
   $("#friends-refresh").click(function(e) {
     e.preventDefault();
+    $("#friend-nav ul").hide();
     showFriends();
   });
 
@@ -226,34 +227,47 @@ $(document).ready(function() {
 
   function showFriends() {
     $("#friend-results").html("");
-    $.each( users, function(i, user){
-      var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "blank", "movie1name": "", "movie2image": "blank", "movie2name": "", "movie3image": "blank", "movie3name": ""}
-      $.each( votes, function(j, vote){
-        if(vote['voter'] == user['fbid']) {
-          $.each( movies, function(k, movie){
-            if(vote['movie'] == movie['id'])
-            {
-              if (vote['movie'] != null) {
-                if (vote['rank'] == 1){
-                  userInfo['movie1image'] = movie['slug'];
-                  userInfo['movie1name'] = movie['name'];
-                }
-                else if(vote['rank'] == 2){
-                  userInfo['movie2image'] = movie['slug'];
-                  userInfo['movie2name'] = movie['name'];
-                }
-                else if(vote['rank'] == 3){
-                  userInfo['movie3image'] = movie['slug'];
-                  userInfo['movie3name'] = movie['name'];
-                }
+    var numFriends = 0;
+    $.each( fbFriends, function(h, friend){
+      $.each( users, function(i, user){
+        if(user['fbid'] == friend['uid']) {
+          numFriends += 1;
+          if (user['fbid'] == "36400913") {
+            var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "leprechaun-in-the-hood", "movie1name": "Leprechaun in the Hood", "movie2image": "leprechaun-in-the-hood", "movie2name": "Leprechaun in the Hood", "movie3image": "leprechaun-in-the-hood", "movie3name": "Leprechaun in the Hood"}
+          }
+          else {
+            var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "blank", "movie1name": "", "movie2image": "blank", "movie2name": "", "movie3image": "blank", "movie3name": ""}
+            $.each( votes, function(j, vote){
+              if(vote['voter'] == user['fbid']) {
+                $.each( movies, function(k, movie){
+                  if(vote['movie'] == movie['id'])
+                  {
+                    if (vote['movie'] != null) {
+                      if (vote['rank'] == 1){
+                        userInfo['movie1image'] = movie['slug'];
+                        userInfo['movie1name'] = movie['name'];
+                      }
+                      else if(vote['rank'] == 2){
+                        userInfo['movie2image'] = movie['slug'];
+                        userInfo['movie2name'] = movie['name'];
+                      }
+                      else if(vote['rank'] == 3){
+                        userInfo['movie3image'] = movie['slug'];
+                        userInfo['movie3name'] = movie['name'];
+                      }
+                    }
+                  }
+                });
               }
-              //choices[((vote['rank'])-1)] = movie['slug'];
-            }
-          });
+            });
+          }
+          $.tmpl("friend", userInfo).appendTo("#friend-results");
         }
       });
-      $.tmpl("friend", userInfo).appendTo("#friend-results");
     });
+    if (numFriends == 0){
+      $("#friend-results").html("<p>None of your friends have voted yet!</p>");
+    }
     $("#friend-results").show();
   }
 
@@ -332,14 +346,16 @@ $(document).ready(function() {
     if( choices[0] != "" ) {
       $('#nav li.post').show();
     }
-    FB.api('/me/friends', function(response) {
-      fbFriends = response;
-    });
-    if( fbUserInfo['id'] == "36400025" ){
-      $("#friend-nav").show();
-      //showFriends();
-    }
-
+    FB.api(
+      {
+        method: 'fql.query',
+        query: 'select uid, name, is_app_user from user where uid in (select uid2 from friend where uid1=me()) and is_app_user=1'
+      },
+      function(response) {
+        fbFriends = response;
+        $("#friend-nav").show();
+      }
+    );
   }
 
   function setupSelector() {
