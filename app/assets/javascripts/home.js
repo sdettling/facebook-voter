@@ -18,15 +18,6 @@ $(document).ready(function() {
   $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
   $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}-m.jpeg" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}-m.jpeg" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}-m.jpeg" /></div><p>${movie3name}</p></li></ul></div>');
 
-  if(touchDevice){
-     $("#login").hide();
-     $("#subtitle").html('<p style="color: #ff0000;">Sorry, this site does not support touch devices.</p>');
-     $("#subtitle").show();
-     // bind to touchstart, touchmove, etc and watch `event.streamId`
-  } else {
-    
-  }
-
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '248504555218072', // App ID
@@ -360,16 +351,12 @@ $(document).ready(function() {
   }
 
   function setupSelector() {
-    if(Modernizr.touch){
-      $.each(movies, function(i, movie){
-        //console.log(movie['slug'])
-        touchMovies.push( new webkit_draggable(movie['slug'], {revert : true, scroll : true, onStart : function(){ $('#selections li').addClass('state-highlight'); }, onEnd : function(){ $('#selections li').removeClass('state-highlight'); } } ) );
-      });
+    if(touchDevice){
+      createTouchDraggables();
       $('#selections li').each(function(index) {
           var drop = $(this)[0].id;
-          webkit_drop.add(drop, {hoverClass : 'state-hover', onDrop : function(d,e){ console.log(d); console.log( $(e.target).parents('.movie:first')[0].id) } } );
+          webkit_drop.add(drop, {hoverClass : 'state-hover', onDrop : function(d,e,f){ addSelection(d,f); } } );
       });
-      //webkit_drop.add("choices", {accept : ['movie']} );
     }
     else{
       $choices = $( "#choices" );
@@ -411,7 +398,7 @@ $(document).ready(function() {
         data: votes,
         success: function() {
           saving = false;
-          $(".saving").hide();
+          //$(".saving").hide();
           scoreMovies(custom);
         }
       });
@@ -434,15 +421,36 @@ $(document).ready(function() {
       saveVotes();
     }
   }
+  
+  function createTouchDraggables() {
+    if(touchDevice){
+      $.each(movies, function(i, movie){
+        touchMovies.push( new webkit_draggable(movie['slug'], {revert : true, scroll : true, onStart : function(){ $('#selections li').addClass('state-highlight'); }, onEnd : function(){ $('#selections li').removeClass('state-highlight'); } } ) );
+      });
+    }
+  }
 
   function addSelection( $item, $choice ) {
     if (!saving) {
       saving = true;
-      var movieName = $item[0].id;
-      var choiceNumber = $choice[0].id.replace("vote", "");
+      if(touchDevice){
+        $.each(touchMovies, function(i, movie){
+          movie.destroy();
+        });
+        
+        var movieName = $item.id;
+        var choiceNumber = $choice.id.replace("vote", "");
+        $item = $("#"+movieName);
+        $choice = $("#vote"+choiceNumber);
+      }
+      else {
+        var movieName = $item[0].id;
+        var choiceNumber = $choice[0].id.replace("vote", "");
+      }
       var existingMovie = choices[(choiceNumber-1)];
       var droppedArrayPos = $.inArray(movieName, choices);
       var existingArrayPos = $.inArray(existingMovie, choices);
+      
       if(choiceNumber == 1){
         $('#nav li.post').show();
       }
@@ -450,7 +458,9 @@ $(document).ready(function() {
         $item.fadeOut('fast',function() {
           $item
             .appendTo( $choice )
-            .fadeIn('fast');
+            .fadeIn('fast', function(){
+              createTouchDraggables();
+            });
         });
         $choice.find(".instructions").fadeOut('fast');
         if( droppedArrayPos > -1 ){
@@ -472,7 +482,9 @@ $(document).ready(function() {
           $item.fadeOut('fast',function() {
             $item
               .appendTo( $choice )
-              .fadeIn('fast');
+              .fadeIn('fast', function(){
+                createTouchDraggables();
+              });
           });
           choices[droppedArrayPos] = existingMovie;
           choices[existingArrayPos] = movieName;
@@ -486,17 +498,24 @@ $(document).ready(function() {
               .insertBefore( '#choices .clearer' )
               .fadeIn('fast');
           });
+          if(touchDevice){
+            $oldItem.css("position", "relative");
+          }
           $item.fadeOut('fast',function() {
             $item
               .appendTo( $choice )
-              .fadeIn('fast');
+              .fadeIn('fast', function(){
+                createTouchDraggables();
+              });
           });
           choices[(choiceNumber-1)] = movieName;
           chosenIDs[(choiceNumber-1)] = $("#"+movieName).attr("data-id");
         }
       }
+      if(touchDevice){
+        $item.css({"top": "0px", "left": "0px", "position": "absolute"});
+      }
       saveVotes();
     }
   }
-
 });

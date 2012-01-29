@@ -345,7 +345,7 @@ var webkit_droppables = function()
 	{
 		if(index != -1)
 		{
-			this.droppables[index].p.onDrop(r,e);
+			this.droppables[index].p.onDrop(r,e,this.droppables[index].r);
 		}
 	}
 	
