@@ -4,9 +4,11 @@ $(document).ready(function() {
   var votes = null;
   var fbUserInfo = null;
   var fbFriends = null;
+  var touchMovies = new Array();
   var choices = new Array("","","");
   var chosenIDs = new Array("","","");
   var $selections = $( "#selections" );
+  var touchDevice = Modernizr.touch;
   var saving = false;
   var custom = false;
   var invited = ["19600245","26904108","36400111","36400222","36402585","36405216","36406896","36409763","68302058","508750472","100000313172773","100000645482115","16320868","36400025","36400078","36400272","36400277","36400405","36400913","36401292","36402678","36403066","36403766","36407513","198900007","511794795","617647469","625495213","783068255","1044233749","36400432","553586954","1782894834","36400584","36400937","79201405","592801990","736950829","1157138915","1450489800","100000495870476"];
@@ -15,14 +17,6 @@ $(document).ready(function() {
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
   $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
   $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}-m.jpeg" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}-m.jpeg" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}-m.jpeg" /></div><p>${movie3name}</p></li></ul></div>');
-
-  if(Modernizr.touch){
-     $("#login").hide();
-     $("#subtitle").html('<p style="color: #ff0000;">Sorry, this site does not support touch devices.</p>');
-     $("#subtitle").show();
-     // bind to touchstart, touchmove, etc and watch `event.streamId`
-  } else {
-  }
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -54,13 +48,14 @@ $(document).ready(function() {
     success: function( data ) {
       movies = data;
       $.each( movies, function(i, movie){
-         $.tmpl("movie-div", movie).appendTo("#choices");
+         $.tmpl("movie-div", movie).insertBefore("#choices .clearer");
       });
       scoreMovies(custom);
       $(".movie .more-info").click(function(e) {
         e.preventDefault();
         openMovieDetail($(this).parents('.movie')[0].id);
       });
+      //setupSelector();
     }
   });
 
@@ -157,11 +152,9 @@ $(document).ready(function() {
           url: '/users',
           data: { "user": { "name": fbUserInfo["name"], "email": "", "fbid": fbUserInfo["id"] }},
           success: function(response) {
-            setupSelector();
             $("#login").hide();
             $("#subtitle").show();
             $("#selections").show();
-            setupSelector();
             loadUsersVotes();
             getUserImages();
             if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
@@ -170,12 +163,10 @@ $(document).ready(function() {
           },
           error: function(response) {
             if(response['responseText'] == '{"fbid":["has already been taken"]}')
-              {
-              setupSelector();
+            {
               $("#login").hide();
               $("#subtitle").show();
               $("#selections").show();
-              setupSelector();
               loadUsersVotes();
               getUserImages();
               if( $.inArray(fbUserInfo["id"], invited) >= 0 ) {
@@ -346,6 +337,7 @@ $(document).ready(function() {
     if( choices[0] != "" ) {
       $('#nav li.post').show();
     }
+    setupSelector();
     FB.api(
       {
         method: 'fql.query',
@@ -359,33 +351,42 @@ $(document).ready(function() {
   }
 
   function setupSelector() {
-    $choices = $( "#choices" );
+    if(touchDevice){
+      createTouchDraggables();
+      $('#selections li').each(function(index) {
+          var drop = $(this)[0].id;
+          webkit_drop.add(drop, {hoverClass : 'state-hover', onDrop : function(d,e,f){ addSelection(d,f); } } );
+      });
+    }
+    else{
+      $choices = $( "#choices" );
 
-    //make movies draggable
-    $( ".movie", $choices ).draggable({
-      revert: "invalid",
-      helper: "clone",
-      cursor: "move"
-    });
+      //make movies draggable
+      $( ".movie" ).draggable({
+        revert: "invalid",
+        helper: "clone",
+        cursor: "move"
+      });
 
-    //allow movies to be dropped into rankings
-    $( "li", $selections ).droppable({
-      accept: ".movie",
-      activeClass: "state-highlight",
-      hoverClass: "state-hover",
-      drop: function( event, ui ) {
-        addSelection( ui.draggable, $(this) );
-      }
-    });
+      //allow movies to be dropped into rankings
+      $( "li", $selections ).droppable({
+        accept: ".movie",
+        activeClass: "state-highlight",
+        hoverClass: "state-hover",
+        drop: function( event, ui ) {
+          addSelection( ui.draggable, $(this) );
+        }
+      });
 
-    //allow movies to be dropped back into the list for removal
-    $choices.droppable({
-      accept: "#selections .movie",
-      activeClass: "custom-state-active",
-      drop: function( event, ui ) {
-        removeSelection( ui.draggable );
-      }
-    });
+      //allow movies to be dropped back into the list for removal
+      $choices.droppable({
+        accept: "#selections .movie",
+        activeClass: "custom-state-active",
+        drop: function( event, ui ) {
+          removeSelection( ui.draggable );
+        }
+      });
+    }
   }
 
   function saveVotes() {
@@ -397,7 +398,7 @@ $(document).ready(function() {
         data: votes,
         success: function() {
           saving = false;
-          $(".saving").hide();
+          //$(".saving").hide();
           scoreMovies(custom);
         }
       });
@@ -409,7 +410,7 @@ $(document).ready(function() {
       saving = true;
       $item.fadeOut('fast',function() {
         $item
-          .appendTo( $choices )
+          .insertBefore( '#choices .clearer' )
           .fadeIn('fast');
       });
       choices[$.inArray($item.id, choices)] = "";
@@ -420,15 +421,36 @@ $(document).ready(function() {
       saveVotes();
     }
   }
+  
+  function createTouchDraggables() {
+    if(touchDevice){
+      $.each(movies, function(i, movie){
+        touchMovies.push( new webkit_draggable(movie['slug'], {revert : true, scroll : true, onStart : function(){ $('#selections li').addClass('state-highlight'); }, onEnd : function(){ $('#selections li').removeClass('state-highlight'); } } ) );
+      });
+    }
+  }
 
   function addSelection( $item, $choice ) {
     if (!saving) {
       saving = true;
-      var movieName = $item[0].id;
-      var choiceNumber = $choice[0].id.replace("vote", "");
+      if(touchDevice){
+        $.each(touchMovies, function(i, movie){
+          movie.destroy();
+        });
+        
+        var movieName = $item.id;
+        var choiceNumber = $choice.id.replace("vote", "");
+        $item = $("#"+movieName);
+        $choice = $("#vote"+choiceNumber);
+      }
+      else {
+        var movieName = $item[0].id;
+        var choiceNumber = $choice[0].id.replace("vote", "");
+      }
       var existingMovie = choices[(choiceNumber-1)];
       var droppedArrayPos = $.inArray(movieName, choices);
       var existingArrayPos = $.inArray(existingMovie, choices);
+      
       if(choiceNumber == 1){
         $('#nav li.post').show();
       }
@@ -436,7 +458,9 @@ $(document).ready(function() {
         $item.fadeOut('fast',function() {
           $item
             .appendTo( $choice )
-            .fadeIn('fast');
+            .fadeIn('fast', function(){
+              createTouchDraggables();
+            });
         });
         $choice.find(".instructions").fadeOut('fast');
         if( droppedArrayPos > -1 ){
@@ -458,7 +482,9 @@ $(document).ready(function() {
           $item.fadeOut('fast',function() {
             $item
               .appendTo( $choice )
-              .fadeIn('fast');
+              .fadeIn('fast', function(){
+                createTouchDraggables();
+              });
           });
           choices[droppedArrayPos] = existingMovie;
           choices[existingArrayPos] = movieName;
@@ -469,20 +495,27 @@ $(document).ready(function() {
         {
           $oldItem.fadeOut('fast',function() {
             $oldItem
-              .appendTo( $choices )
+              .insertBefore( '#choices .clearer' )
               .fadeIn('fast');
           });
+          if(touchDevice){
+            $oldItem.css("position", "relative");
+          }
           $item.fadeOut('fast',function() {
             $item
               .appendTo( $choice )
-              .fadeIn('fast');
+              .fadeIn('fast', function(){
+                createTouchDraggables();
+              });
           });
           choices[(choiceNumber-1)] = movieName;
           chosenIDs[(choiceNumber-1)] = $("#"+movieName).attr("data-id");
         }
       }
+      if(touchDevice){
+        $item.css({"top": "0px", "left": "0px", "position": "absolute"});
+      }
       saveVotes();
     }
   }
-
 });

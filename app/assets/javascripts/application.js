@@ -9,4 +9,5 @@
 //= require jquery-ui
 //= require modernizr
 //= require jquery-tmpl
+//= require webkitdragdrop
 //= require_tree .
