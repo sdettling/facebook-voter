@@ -413,8 +413,9 @@ $(document).ready(function() {
           .insertBefore( '#choices .clearer' )
           .fadeIn('fast');
       });
-      choices[$.inArray($item.id, choices)] = "";
-      chosenIDs[$.inArray($item.attr("data-id"), chosenIDs)] = "";
+      
+      choices[$.inArray($item[0].id, choices)] = "";
+      chosenIDs[$.inArray(Number($item.attr("data-id")), chosenIDs)] = "";
       if(choices[0] == ""){
         $('#nav li.post').hide();
       }
