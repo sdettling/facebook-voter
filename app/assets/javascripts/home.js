@@ -223,29 +223,24 @@ $(document).ready(function() {
       $.each( users, function(i, user){
         if(user['fbid'] == friend['uid']) {
           numFriends += 1;
-          if (user['fbid'] == "36400913") {
-            var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "leprechaun-in-the-hood", "movie1name": "Leprechaun in the Hood", "movie2image": "leprechaun-in-the-hood", "movie2name": "Leprechaun in the Hood", "movie3image": "leprechaun-in-the-hood", "movie3name": "Leprechaun in the Hood"}
-          }
-          else {
-            var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "blank", "movie1name": "", "movie2image": "blank", "movie2name": "", "movie3image": "blank", "movie3name": ""}
-            $.each( votes, function(j, vote){
-              if(vote['voter'] == user['fbid']) {
-                $.each( movies, function(k, movie){
-                  if(vote['movie'] == movie['id'])
-                  {
-                    if (vote['movie'] != null) {
-                      if (vote['rank'] == 1){
-                        userInfo['movie1image'] = movie['slug'];
-                        userInfo['movie1name'] = movie['name'];
-                      }
-                      else if(vote['rank'] == 2){
-                        userInfo['movie2image'] = movie['slug'];
-                        userInfo['movie2name'] = movie['name'];
-                      }
-                      else if(vote['rank'] == 3){
-                        userInfo['movie3image'] = movie['slug'];
-                        userInfo['movie3name'] = movie['name'];
-                      }
+          var userInfo = {"image": user['image'], "name": user['name'], "movie1image": "blank", "movie1name": "", "movie2image": "blank", "movie2name": "", "movie3image": "blank", "movie3name": ""}
+          $.each( votes, function(j, vote){
+            if(vote['voter'] == user['fbid']) {
+              $.each( movies, function(k, movie){
+                if(vote['movie'] == movie['id'])
+                {
+                  if (vote['movie'] != null) {
+                    if (vote['rank'] == 1){
+                      userInfo['movie1image'] = movie['slug'];
+                      userInfo['movie1name'] = movie['name'];
+                    }
+                    else if(vote['rank'] == 2){
+                      userInfo['movie2image'] = movie['slug'];
+                      userInfo['movie2name'] = movie['name'];
+                    }
+                    else if(vote['rank'] == 3){
+                      userInfo['movie3image'] = movie['slug'];
+                      userInfo['movie3name'] = movie['name'];
                     }
                   }
                 });
