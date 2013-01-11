@@ -11,12 +11,12 @@ $(document).ready(function() {
   var touchDevice = Modernizr.touch;
   var saving = false;
   var custom = false;
-  var invited = ["19600245","26904108","36400111","36400222","36402585","36405216","36406896","36409763","68302058","508750472","100000313172773","100000645482115","16320868","36400025","36400078","36400272","36400277","36400405","36400913","36401292","36402678","36403066","36403766","36407513","198900007","511794795","617647469","625495213","783068255","1044233749","36400432","553586954","1782894834","36400584","36400937","79201405","592801990","736950829","1157138915","1450489800","100000495870476"];
+  var invited = ["36400272","36402678","36400025","625495213","36403766","1044233749","36400277","36401292","36400405","198900007","36407513","36400105","36400432","18506865","36402585","36400222","508750472","16320868","36403066","617647469","36400913"];
 
-  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpeg" /></div><p>${name}</p></div>');
-  $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}-s.jpeg" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
-  $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpeg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
-  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}-m.jpeg" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}-m.jpeg" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}-m.jpeg" /></div><p>${movie3name}</p></li></ul></div>');
+  $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpg" /></div><p>${name}</p></div>');
+  $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}.jpg" width="25" height="37" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
+  $.template('detail', '<div class="image"><img alt="${name}" src="/assets/${slug}.jpg"></div><h3>${name}</h3><p><strong>Director:</strong> ${director}</p><p><strong>Cast:</strong> ${cast}</p><p><a href="${url1}" target="_blank">Watch the Trailers</a> <a href="${url2}" target="_blank">View on IMDB</a></p><p class="synopsis"><strong>Synopsis:</strong> ${synopsis}</p>');
+  $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}.jpg" width="34" height="50" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}.jpg" width="34" height="50" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}.jpg" width="34" height="50" /></div><p>${movie3name}</p></li></ul></div>');
 
   window.fbAsyncInit = function() {
     FB.init({
@@ -184,7 +184,7 @@ $(document).ready(function() {
     var obj = {
       method: 'feed',
       link: 'http://cinemacelebration.com/',
-      picture: 'http://cinemacelebration.com/assets/'+choices[0]+'.jpeg',
+      picture: 'http://cinemacelebration.com/assets/'+choices[0]+'.jpg',
       name: 'The Academy\'s Best Pictures of 2011',
       caption: firstChoice+' is my pick for best picture this year.',
       description: 'Who do you think will take home the Oscar this year? Cast your vote.'
