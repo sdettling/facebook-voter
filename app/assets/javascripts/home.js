@@ -243,10 +243,10 @@ $(document).ready(function() {
                       userInfo['movie3name'] = movie['name'];
                     }
                   }
-                });
-              }
-            });
-          }
+                }
+              });
+            }
+          });
           $.tmpl("friend", userInfo).appendTo("#friend-results");
         }
       });
