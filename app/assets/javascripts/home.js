@@ -208,8 +208,7 @@ $(document).ready(function() {
         $.each( users, function(i, user){
           var userImage = null;
           FB.api('/'+user['fbid']+'/picture', function(response) {
-            console.log(response)
-            userImage = response.url;
+            userImage = response.data.url;
             user['image'] = userImage;
           });
         });
