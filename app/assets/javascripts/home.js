@@ -392,6 +392,7 @@ $(document).ready(function() {
   function saveVotes() {
     if (fbUserInfo['id'] != null) {
       var votes = { "selections": {"user": fbUserInfo['id'], "vote1": chosenIDs[0], "vote2": chosenIDs[1], "vote3": chosenIDs[2] }};
+      $("#save").html('Saving&hellip;').removeClass('success fail').show();
       $.ajax({
         type: "POST",
         url: '/votes',
@@ -400,6 +401,10 @@ $(document).ready(function() {
           saving = false;
           //$(".saving").hide();
           scoreMovies(custom);
+          $("#save").html('Saved!').addClass('success').fadeOut(2000);
+        },
+        error: function() {
+          $("#save").html('Failed!').addClass('fail').fadeOut(2000);
         }
       });
     }
