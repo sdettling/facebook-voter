@@ -27,6 +27,7 @@ $(document).ready(function() {
       xfbml      : true  // parse XFBML
     });
     FB.getLoginStatus(function(response) {
+      console.log(response)
       if (response.status === 'connected') {
         var uid = response.authResponse.userID;
         var accessToken = response.authResponse.accessToken;
