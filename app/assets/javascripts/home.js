@@ -19,6 +19,8 @@ $(document).ready(function() {
   $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}.jpg" width="34" height="50" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}.jpg" width="34" height="50" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}.jpg" width="34" height="50" /></div><p>${movie3name}</p></li></ul></div>');
 
   window.fbAsyncInit = function() {
+    console.log('init')
+    console.log(FB)
     FB.init({
       appId      : '248504555218072', // App ID
       channelUrl : '//cinemacelebration.com/channel.html', // Channel File
