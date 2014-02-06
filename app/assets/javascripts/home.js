@@ -21,7 +21,7 @@ $(document).ready(function() {
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '248504555218072', // App ID
-      channelUrl : '//celebratecinema.com/channel.html', // Channel File
+      channelUrl : '//cinemacelebration.com/channel.html', // Channel File
       status     : true, // check login status
       cookie     : true, // enable cookies to allow the server to access the session
       xfbml      : true  // parse XFBML
@@ -35,8 +35,10 @@ $(document).ready(function() {
       } else if (response.status === 'not_authorized') {
         // the user is logged in to Facebook,
         //but not connected to the app
+        console.log('not connected')
       } else {
         // the user isn't even logged in to Facebook.
+        console.log('not logged in')
       }
     });
   };
