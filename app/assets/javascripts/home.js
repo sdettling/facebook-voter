@@ -11,7 +11,37 @@ $(document).ready(function() {
   var touchDevice = Modernizr.touch;
   var saving = false;
   var custom = false;
-  var invited = ["36400272","36402678","36400025","625495213","36403766","1044233749","36400277","36401292","36400405","198900007","36407513","36400105","36400432","18506865","36402585","36400222","508750472","16320868","36403066","617647469","36400913"];
+  var invited = ["36400277",
+  "100000495870476",
+  "1822650074",
+  "1044233749",
+  "797438047",
+  "625495213",
+  "511794795",
+  "198900007",
+  "36403766",
+  "36403066",
+  "36402678",
+  "36401292",
+  "36400272",
+  "1450489800",
+  "736950829",
+  "617647469",
+  "36407513",
+  "36400432",
+  "100001202571310",
+  "100000313172773",
+  "508750472",
+  "36409763",
+  "36405216",
+  "36401426",
+  "36400913",
+  "36400222",
+  "36400111",
+  "36400105",
+  "36400025",
+  "18506865",
+  "16320868"];
 
   $.template('movie-div', '<div id="${slug}" data-id="${id}" class="movie"><div class="pedestal"><a href="#" class="more-info">i</a><img src="/assets/${slug}.jpg" width="120" height"178" /></div><p>${name}</p></div>');
   $.template('graph-item', '<div class="item"><div class="bar"><div class="value" style="height: ${barheight}px;"></div></div><div class="info"><div class="pedestal"><img src="/assets/${slug}.jpg" width="25" height="37" /></div><p class="title">${name}</p><p class="score">${points} points</p></div></div>');
@@ -19,8 +49,8 @@ $(document).ready(function() {
   $.template('friend', '<div class="friend"><ul><li><div class="user-image"><img src="${image}" /></div><p>${name}</p></li><li><div class="number">1:</div><div class="image"><img src="/assets/${movie1image}.jpg" width="34" height="50" /></div><p>${movie1name}</p></li><li><div class="number">2:</div><div class="image"><img src="/assets/${movie2image}.jpg" width="34" height="50" /></div><p>${movie2name}</p></li><li><div class="number">3:</div><div class="image"><img src="/assets/${movie3image}.jpg" width="34" height="50" /></div><p>${movie3name}</p></li></ul></div>');
 
   window.fbAsyncInit = function() {
-    console.log('init')
-    console.log(FB)
+    //console.log('init')
+    //console.log(FB)
     FB.init({
       appId      : '248504555218072', // App ID
       channelUrl : 'http://cinemacelebration.com/channel.html', // Channel File
@@ -45,10 +75,10 @@ $(document).ready(function() {
       }
     });*/
     FB.Event.subscribe('auth.authResponseChange', function(response) {
-      console.log("authResponseChange")
+      //console.log("authResponseChange")
       // Here we specify what we do with the response anytime this event occurs. 
       if (response.status === 'connected') {
-        console.log(response)
+        //console.log(response)
         var uid = response.authResponse.userID;
         var accessToken = response.authResponse.accessToken;
         $("#login").hide();
@@ -56,7 +86,7 @@ $(document).ready(function() {
         // The response object is returned with a status field that lets the app know the current
         // login status of the person. In this case, we're handling the situation where they 
         // have logged in to the app.
-        testAPI();
+        //testAPI();
       } else if (response.status === 'not_authorized') {
         // In this case, the person is logged into Facebook, but not into the app, so we call
         // FB.login() to prompt them to do so. 
@@ -156,7 +186,7 @@ $(document).ready(function() {
     loadUsersVotes();*/
 
     FB.login(function(response) {
-      console.log(response)
+      //console.log(response)
       if (response.authResponse) {
         initializeUser();
       } else {
