@@ -122,6 +122,7 @@ $(document).ready(function() {
     loadUsersVotes();*/
 
     FB.login(function(response) {
+      console.log(response)
       if (response.authResponse) {
         initializeUser();
       } else {
