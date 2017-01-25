@@ -12,7 +12,7 @@ end
 
 gem 'jquery-rails'
 gem 'haml'
-gem 'sass-rails',   '~> 3.2.6'
+gem 'sass-rails',   '~> 3.2.3'
 
 # Use unicorn as the web server
 gem 'unicorn'
