@@ -433,7 +433,7 @@ $(document).ready(function() {
       },
       function(response) {
         fbFriends = response;
-        $("#friend-nav").show();
+        // $("#friend-nav").show();
       }
     );
   }
